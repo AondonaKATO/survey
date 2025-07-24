@@ -65,6 +65,11 @@
     <button type="submit">Submit</button>
   </form>
 
+  <a href="/admin" style="position: fixed; top: 10px; right: 10px;">Admin Dashboard</a>
+
+  <button onclick="window.location.href='/admin'">Go to Admin Dashboard</button>
+
+
   <script>
     document.getElementById("surveyForm").addEventListener("submit", async function (e) {
       e.preventDefault();
