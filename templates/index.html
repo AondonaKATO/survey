@@ -11,6 +11,19 @@
 
 </head>
 <body>
+  <header class="header">
+  <div class="container">
+    <h1 class="logo">English Dept</h1>
+    <nav class="nav" id="navMenu">
+      <a href="/">Home</a>
+      <a href="/templates/admin">Admin</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="nav-toggle" onclick="toggleMenu()">☰</button>
+  </div>
+</header>
+<div class="main-content">
   <h1>English Department 31-Day Challenge Survey</h1>
   <form id="surveyForm">
     <label>1. Would you participate in the 31-day challenge?</label>
@@ -61,7 +74,7 @@
   <a href="/admin" style="position: fixed; top: 10px; right: 10px;">Admin Dashboard</a>
 
   <button onclick="window.location.href='/admin'">Go to Admin Dashboard</button>
-
+</div>
 
   <script>
     document.getElementById("surveyForm").addEventListener("submit", async function (e) {
@@ -82,6 +95,24 @@
         alert("Submission failed. Try again later.");
       }
     });
+    
   </script>
+  <script>
+  function toggleMenu() {
+    const nav = document.getElementById("navMenu");
+    nav.classList.toggle("show");
+  }
+</script>
+
+  <footer class="footer">
+  <div class="footer-content">
+    <p>&copy; 2025 English Department. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+      <a href="#">Support</a>
+    </div>
+  </div>
+</footer>
 </body>
 </html>
