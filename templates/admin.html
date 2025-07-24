@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Survey Responses</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+    h1 { text-align: center; }
+    input[type="search"] { margin-bottom: 10px; padding: 8px; width: 300px; display: block; margin-left: auto; margin-right: auto; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+    th { background-color: #004aad; color: white; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+    .btn { margin: 10px; background: #004aad; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; }
+    .top-controls { display: flex; justify-content: space-between; align-items: center; max-width: 1000px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+  <div class="top-controls">
+    <input type="search" id="searchBox" placeholder="Search responses..." />
+    <button class="btn" onclick="downloadExcel()">Download Excel</button>
+  </div>
+  <table id="responseTable">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Participation</th>
+        <th>Preferences</th>
+        <th>Prompts</th>
+        <th>Themes</th>
+        <th>Friday Fun</th>
+        <th>Format</th>
+        <th>Tone</th>
+        <th>Academic Tasks</th>
+        <th>Literary</th>
+        <th>Additional Suggestions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let allResponses = [];
+
+    async function fetchResponses() {
+      const res = await fetch('/responses');
+      const data = await res.json();
+      allResponses = data;
+      renderTable(data);
+    }
+
+    function renderTable(data) {
+      const tbody = document.querySelector('#responseTable tbody');
+      tbody.innerHTML = '';
+      data.forEach(row => {
+        const tr = document.createElement('tr');
+        row.forEach(cell => {
+          const td = document.createElement('td');
+          td.textContent = cell;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    function downloadExcel() {
+      window.location.href = '/download';
+    }
+
+    document.getElementById('searchBox').addEventListener('input', function() {
+      const term = this.value.toLowerCase();
+      const filtered = allResponses.filter(row =>
+        row.some(cell => (cell || '').toLowerCase().includes(term))
+      );
+      renderTable(filtered);
+    });
+
+    fetchResponses();
+  </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Department Survey</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f7f7f7; padding: 20px; }
+    h1 { text-align: center; }
+    form { background: white; padding: 20px; border-radius: 8px; max-width: 800px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    label { display: block; margin: 15px 0 5px; }
+    input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    button { margin-top: 20px; padding: 10px 20px; background-color: #004aad; color: white; border: none; border-radius: 5px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>English Department 31-Day Challenge Survey</h1>
+  <form id="surveyForm">
+    <label>1. Would you participate in the 31-day challenge?</label>
+    <select name="participation">
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+      <option value="Maybe">Maybe</option>
+    </select>
+
+    <label>2. What kind of challenges do you enjoy? (Comma-separated)</label>
+    <input type="text" name="preferences" />
+
+    <label>3. Suggest three creative challenge prompts</label>
+    <textarea name="prompts"></textarea>
+
+    <label>4. Suggested weekly themes</label>
+    <input type="text" name="themes" />
+
+    <label>5. Fun Friday content you'd enjoy</label>
+    <input type="text" name="friday_fun" />
+
+    <label>6. Challenge format preference</label>
+    <select name="format">
+      <option value="Text Only">Text Only</option>
+      <option value="Text + Images">Text + Images</option>
+      <option value="Depends">Depends on the prompt</option>
+    </select>
+
+    <label>7. Preferred tone</label>
+    <input type="text" name="tone" />
+
+    <label>8. Should we include academic tasks?</label>
+    <select name="academic_tasks">
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+      <option value="Occasionally">Occasionally</option>
+    </select>
+
+    <label>9. Literary themes or authors you want featured</label>
+    <input type="text" name="literary" />
+
+    <label>10. Additional ideas or suggestions</label>
+    <textarea name="additional"></textarea>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.getElementById("surveyForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      const response = await fetch("/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        alert("Thank you! Your response has been submitted.");
+        e.target.reset();
+      } else {
+        alert("Submission failed. Try again later.");
+      }
+    });
+  </script>
+</body>
+</html>
