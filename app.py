@@ -28,9 +28,48 @@ def index():
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
+import openpyxl
 
-@app.route('/submit', methods=['POST'])
+@app.route('/admin')
+def admin():
+    try:
+        wb = openpyxl.load_workbook("survey_responses.xlsx")
+        sheet = wb.active
+        data = []
+        for row in sheet.iter_rows(values_only=True):
+            data.append(row)
+        return render_template("admin.html", data=data)
+    except Exception as e:
+        return f"Error reading data: {e}"
+    
+    @app.route('/submit', methods=['POST'])
 def submit():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    idea = request.form.get('idea')
+
+    try:
+        file_name = "survey_responses.xlsx"
+        try:
+            wb = openpyxl.load_workbook(file_name)
+        except FileNotFoundError:
+            wb = openpyxl.Workbook()
+
+        sheet = wb.active
+
+        if sheet.max_row == 1 and sheet.cell(row=1, column=1).value is None:
+            sheet.append(["Name", "Email", "Challenge Idea"])
+
+        sheet.append([name, email, idea])
+        wb.save(file_name)
+        return "Thanks for submitting your idea!"
+    except Exception as e:
+        return f"Error saving response: {e}"
+
+
+
+''' @app.route('/submit', methods=['POST'])
+ def submit():
     data = request.get_json()
     if not data:
         return jsonify({"error": "No data received"}), 400
@@ -58,7 +97,7 @@ def submit():
 
         return jsonify({"message": "Response recorded successfully."}), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)}), 500 '''
 
 if __name__ == '__main__':
     initialize_excel()
